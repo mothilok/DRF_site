@@ -1,9 +1,12 @@
 from django.urls import path
 from . import views
-# from rest_framework.routers import DefaultRouter
-#
-# router = DefaultRouter()
-# router.register(r'Poster', post)
+
+from rest_framework.routers import SimpleRouter
+from .views import create_poster
+
+router = SimpleRouter()
+router.register(r'Poster', create_poster, basename='poster')
+
 
 urlpatterns = [
     path('', views.home.as_view(), name='home'),

@@ -16,6 +16,7 @@ class Poster(models.Model):
     phone_number = models.CharField(max_length=16)
 
     def save(self, *args, **kwargs):
+        self.miniature = self.image
         new_image = self.compress_images(self.miniature)
         self.miniature = new_image
         super().save(*args, **kwargs)

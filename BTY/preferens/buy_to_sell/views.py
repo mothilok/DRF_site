@@ -1,8 +1,9 @@
-from django.shortcuts import render
 from .models import Poster
+
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import Serializer_post
+from .serializers import Serializer_post, Serializer_create_post
 
 class home(APIView):
     def get(self, request):
@@ -17,10 +18,16 @@ class post(APIView):
         return Response(serializer.data)
 
 
-class create_poster(APIView):
+class create_poster(generics.CreateAPIView):
+    queryset = Poster.objects.all()
+    serializer_class = Serializer_create_post
     def post(self, request):
-        pass
-
+        serializer = Serializer_create_post(data=request.data)
+        serializer.is_valid()
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
 
 
 
